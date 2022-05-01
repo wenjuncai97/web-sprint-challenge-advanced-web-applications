@@ -6,13 +6,15 @@ const initialFormValues = { title: '', text: '', topic: '' }
 export default function ArticleForm(props) {
   const [values, setValues] = useState(initialFormValues)
   // ✨ where are my props? Destructure them here
+  const { articles, postArticle, updateArticle, setCurrentArticleId, currentArticleId } = props;
 
   useEffect(() => {
     // ✨ implement
     // Every time the `currentArticle` prop changes, we should check it for truthiness:
     // if it's truthy, we should set its title, text and topic into the corresponding
     // values of the form. If it's not, we should reset the form back to initial values.
-  })
+    setValues(articles || initialFormValues)
+  }, [articles])
 
   const onChange = evt => {
     const { id, value } = evt.target
@@ -24,11 +26,19 @@ export default function ArticleForm(props) {
     // ✨ implement
     // We must submit a new post or update an existing one,
     // depending on the truthyness of the `currentArticle` prop.
+    currentArticleId ? updateArticle(currentArticleId, values) : postArticle(values);
+    setValues(initialFormValues);
   }
 
   const isDisabled = () => {
     // ✨ implement
     // Make sure the inputs have some values
+    const {title, text, topic} = values;
+    if(title.length > 0 && text.length > 0 && topic){
+      return false;
+    } else {
+      return true;
+    }
   }
 
   return (
@@ -58,7 +68,7 @@ export default function ArticleForm(props) {
       </select>
       <div className="button-group">
         <button disabled={isDisabled()} id="submitArticle">Submit</button>
-        <button onClick={Function.prototype}>Cancel edit</button>
+        <button onClick={() => setCurrentArticleId(null)}>Cancel edit</button>
       </div>
     </form>
   )

@@ -11,8 +11,8 @@ const waitForOptions = { timeout: 150 }
 const queryOptions = { exact: false }
 
 const renderApp = ui => {
-  window.localStorage.clear()
-  window.history.pushState({}, 'Test page', '/')
+  localStorage.clear()
+  history.pushState({}, 'Test page', '/')
   return render(ui)
 }
 let server
@@ -30,7 +30,7 @@ afterEach(() => {
   server.resetHandlers(...getHandlers())
 })
 
-const token = () => window.localStorage.getItem('token')
+const token = () => localStorage.getItem('token')
 const logoutBtn = () => screen.queryByText('Logout from app')
 // login screen
 const usernameInput = () => screen.queryByPlaceholderText('Enter username')
